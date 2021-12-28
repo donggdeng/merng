@@ -6,19 +6,18 @@ import { useMutation } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import { useNavigate } from "react-router-dom";
 
+import { useForm } from "../util/hooks";
+
 function Register() {
   let navigate = useNavigate();
   const [errors, setErrors] = useState({});
-  const [values, setValues] = useState({
+
+  const { handleChange, handleSubmit, values } = useForm(registerUser, {
     username: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
-
-  const handleChange = (event) => {
-    setValues({ ...values, [event.target.name]: event.target.value });
-  };
 
   const [addUser, { loading }] = useMutation(REGISTER_USER, {
     update(_, result) {
@@ -30,10 +29,9 @@ function Register() {
     variables: values,
   });
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  function registerUser() {
     addUser();
-  };
+  }
 
   return (
     <Box
