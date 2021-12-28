@@ -4,20 +4,20 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import moment from 'moment';
+import moment from "moment";
 
 function PostCard({
   post: { body, createdAt, id, username, likeCount, commentCount, likes },
 }) {
   return (
-    <Card sx={{ minWidth: 275 }}>
+    <Card>
       <CardContent>
-        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+        <Typography sx={{ fontSize: 20 }} color="text.secondary" gutterBottom>
           {username}
         </Typography>
 
         <Typography sx={{ mb: 1.5 }} color="text.secondary">
-          {moment(createdAt).fromNow()}
+          {moment(createdAt).fromNow(true)}
         </Typography>
         <Typography variant="body2">
           {body}
