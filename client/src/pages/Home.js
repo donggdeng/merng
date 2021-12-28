@@ -17,7 +17,7 @@ function Home() {
         ) : (
           data.getPosts &&
           data.getPosts.map((post) => (
-            <Grid key={post.id} item xs={4}>
+            <Grid key={post.id} item xs={6} md={4}>
                 <PostCard post={post} />
             </Grid>
           ))
