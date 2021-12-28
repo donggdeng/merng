@@ -33,6 +33,10 @@
   color: inherit;
 }
 
+.form-container {
+  width: 400px;
+  margin: auto;
+}
 
 @keyframes App-logo-spin {
   from {
