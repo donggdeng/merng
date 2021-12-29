@@ -1,7 +1,9 @@
-import React from 'react';
+import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import "./App.css";
+
+import { AuthProvider } from "./context/auth";
 
 import ResponsiveAppBar from "./components/AppBar";
 import Home from "./pages/Home";
@@ -10,13 +12,15 @@ import Register from "./pages/Register";
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/*" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-      </Routes>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <Routes>
+          <Route path="/*" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 

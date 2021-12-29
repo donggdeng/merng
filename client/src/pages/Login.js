@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -7,8 +7,10 @@ import gql from "graphql-tag";
 import { useNavigate } from "react-router-dom";
 
 import { useForm } from "../util/hooks";
+import { AuthContext } from "../context/auth";
 
 function Login() {
+  const context = useContext(AuthContext);
   let navigate = useNavigate();
   const [errors, setErrors] = useState({});
 
@@ -18,7 +20,8 @@ function Login() {
   });
 
   const [loginUser, { loading }] = useMutation(LOGIN_USER, {
-    update(_, result) {
+    update(_, { data: { login: userData } }) {
+      context.login(userData);
       navigate("/");
     },
     onError(err) {
