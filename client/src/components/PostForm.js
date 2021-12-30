@@ -38,11 +38,13 @@ function PostForm() {
     >
       <h2>Create a post:</h2>
       <TextField
+        error={error ? true : false}
         style={{ width: "100%" }}
-        label="Body"
+        placeholder="Hi World!"
         name="body"
         size="small"
         type="text"
+        helperText={error && error.graphQLErrors[0].message}
         value={values.body}
         onChange={handleChange}
       ></TextField>
