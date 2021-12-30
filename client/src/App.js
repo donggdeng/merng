@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
 
 import { AuthProvider } from "./context/auth";
+import AuthRoute from "./util/AuthRoute";
 
 import ResponsiveAppBar from "./components/AppBar";
 import Home from "./pages/Home";
@@ -16,8 +17,14 @@ function App() {
       <Router>
         <Routes>
           <Route path="/*" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+
+          <Route path="/login" element={<AuthRoute />}>
+            <Route path="/login" element={<Login />} />
+          </Route>
+
+          <Route path="/register" element={<AuthRoute />}>
+            <Route path="/register" element={<Register />} />
+          </Route>
         </Routes>
       </Router>
     </AuthProvider>
