@@ -1,23 +1,26 @@
-import React from "react";
+import React, { useContext } from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import ForumIcon from '@mui/icons-material/Forum';
+import ForumIcon from "@mui/icons-material/Forum";
 import moment from "moment";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { IconButton, Grid } from "@mui/material";
+
+import { AuthContext } from "../context/auth";
+import LikeButton from "./LikeButton";
 
 function PostCard({
   post: { body, createdAt, id, username, likeCount, commentCount, likes },
 }) {
-  function likePost() {
-    console.log("Like post");
-  }
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   function commentOnPost() {
-    console.log("comemnt on post");
+    navigate(`/posts/${id}`);
   }
 
   return (
@@ -42,14 +45,7 @@ function PostCard({
         </Typography>
       </CardContent>
       <CardActions>
-        <Button
-          variant="outlined"
-          size="small"
-          startIcon={<FavoriteIcon />}
-          onClick={likePost}
-        >
-          {likeCount}
-        </Button>
+        <LikeButton user={user} post={{ id, likes, likeCount }} />
         <Button
           variant="outlined"
           size="small"
@@ -58,6 +54,16 @@ function PostCard({
         >
           {commentCount}
         </Button>
+        {user && user.username === username && (
+          <Grid container justifyContent="flex-end">
+            <IconButton
+              color="error"
+              onClick={() => console.log("Delete post")}
+            >
+              <DeleteIcon />
+            </IconButton>
+          </Grid>
+        )}
       </CardActions>
     </Card>
   );
