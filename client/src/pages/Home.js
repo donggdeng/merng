@@ -1,24 +1,44 @@
-import React from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useQuery } from "@apollo/react-hooks";
-import gql from "graphql-tag";
 import Grid from "@mui/material/Grid";
 
+import { AuthContext } from "../context/auth";
 import Layout from "./Layout";
 import PostCard from "../components/PostCard";
+import PostForm from "../components/PostForm";
+import { FETCH_POSTS_QUERY } from "../util/graphql";
 
 function Home() {
   const { loading, data } = useQuery(FETCH_POSTS_QUERY);
+  const { user } = useContext(AuthContext);
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    if (data) {
+      setPosts(data.getPosts);
+    }
+  }, [data]);
 
   return (
     <Layout>
-      <Grid p={4} container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+      {user && (
+        <Grid p={4}>
+          <PostForm />
+        </Grid>
+      )}
+      <Grid
+        p={4}
+        container
+        rowSpacing={1}
+        columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+      >
         {loading ? (
           <h1>Loading posts..</h1>
         ) : (
-          data.getPosts &&
-          data.getPosts.map((post) => (
+          posts &&
+          posts.map((post) => (
             <Grid key={post.id} item xs={6} md={4}>
-                <PostCard post={post} />
+              <PostCard post={post} />
             </Grid>
           ))
         )}
@@ -26,27 +46,5 @@ function Home() {
     </Layout>
   );
 }
-
-const FETCH_POSTS_QUERY = gql`
-  {
-    getPosts {
-      id
-      body
-      createdAt
-      username
-      likeCount
-      likes {
-        username
-      }
-      commentCount
-      comments {
-        id
-        username
-        createdAt
-        body
-      }
-    }
-  }
-`;
 
 export default Home;
